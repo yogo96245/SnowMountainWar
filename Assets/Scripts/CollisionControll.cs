@@ -20,9 +20,9 @@ public class CollisionControll : MonoBehaviour
     void Update() { 
         Vector3 newPos = transform.position;
         newPos.y = newPos.y + rayPos;
-        // ¼²¨ìª«¥ó¡A½Õ¾ã®g½uªø«×
+        // ï¿½ï¿½ï¿½ìª«ï¿½ï¿½Aï¿½Õ¾ï¿½gï¿½uï¿½ï¿½ï¿½ï¿½
         Vector3 newTarget = transform.forward * 5.0f;
-        // (°_©l¦ì¸m, ¤è¦V, ®g½u¸I¼²ª«¥ó, ®g½u¶ZÂ÷)
+        // (ï¿½_ï¿½lï¿½ï¿½m, ï¿½ï¿½V, ï¿½gï¿½uï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½gï¿½uï¿½Zï¿½ï¿½)
         if (Physics.Raycast (newPos, transform.forward, out hitObject, 5.0f)) { 
             newTarget = hitObject.point - newPos;
             newTarget.y = 0.0f;
@@ -44,7 +44,7 @@ public class CollisionControll : MonoBehaviour
             Debug.Log (hpBar.fillAmount); 
             Debug.Log (this.tag + " was collided by " + other.tag);
             if (hp == 0) {
-                endText.end_text = "Winer  " + other.tag + " !!!";
+                EndText.end_text = "Winer  " + other.tag + " !!!";
                 SceneManager.LoadScene ("end");
             }
             Destroy (other.gameObject);

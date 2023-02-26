@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/start.unity
     guid: dafd3e5868145874788ae9cc1821015a
   - enabled: 1
-    path: Assets/Lowpoly Style/Arctic Tundra/DemoScene/Tundra.unity
+    path: Assets/Scenes/Gaming.unity
     guid: 699c96d0853e355418296dc8f68cff68
   - enabled: 1
     path: Assets/Scenes/end.unity

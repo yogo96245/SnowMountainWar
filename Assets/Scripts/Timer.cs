@@ -27,7 +27,7 @@ public class Timer : MonoBehaviour {
         float canvas_height = canvas.GetComponent<Canvas>().pixelRect.height;
         float canvas_weight = canvas.GetComponent<Canvas>().pixelRect.width;
         float clock_height = clock_Image_RT.rect.height;
-        // +18 ¤~¥i¹F¨ì²z·Q¦ì¸m
+        // +18 ï¿½~ï¿½iï¿½Fï¿½ï¿½zï¿½Qï¿½ï¿½m
         clock_Image_RT.anchoredPosition = new Vector3 (0, (canvas_height/2)-(clock_height/2)+18);
         timeText.rectTransform.anchoredPosition  = new Vector3 (7, clock_Image_RT.localPosition.y-5, 0);
         
@@ -37,8 +37,8 @@ public class Timer : MonoBehaviour {
                 timeRemaining -= Time.deltaTime;
             }
             else {
-                if (player1_Hp.fillAmount > player2_Hp.fillAmount) endText.end_text = "Winer  player1 !!!";
-                if (player1_Hp.fillAmount < player2_Hp.fillAmount) endText.end_text = "Winer  player2 !!!";
+                if (player1_Hp.fillAmount > player2_Hp.fillAmount) EndText.end_text = "Winer  player1 !!!";
+                if (player1_Hp.fillAmount < player2_Hp.fillAmount) EndText.end_text = "Winer  player2 !!!";
                 timeRemaining = 0;
                 timerIsRunning = false;
                 SceneManager.LoadScene ("end");

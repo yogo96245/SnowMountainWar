@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class endText : MonoBehaviour
+public class EndText : MonoBehaviour
 {
     public static string end_text = "Tie";
     public GameObject text;

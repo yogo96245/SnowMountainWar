@@ -2,18 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/* 
-    射出雪球 (O)
-    雪球與角色碰撞 (打到玩家雪球消失 玩家扣血) (O)
-    角色移動攻擊 (O)
-    發射預測線 
-    背景音樂
 
-    分割畫面
-    攝影機
-    時間結束畫面 (顯示勝利玩家)
-    限制玩家行動區域 (周圍有隱形牆壁)
-*/
 public class JellyScript : MonoBehaviour
 {   
     public float runSpeed;
