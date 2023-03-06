@@ -9,12 +9,12 @@ public class SnowCollision : MonoBehaviour
     {
         
     }
-    private void OnTriggerEnter (Collider other) {
-        if (other.tag != "player1" && other.tag != "player2")
-            Destroy (this.gameObject);
-    }
     // Update is called once per frame
     void Update()
     {
+    }
+    private void OnTriggerEnter (Collider other) {
+        if (other.tag != "player1" && other.tag != "player2")
+            Destroy (this.gameObject);
     }
 }

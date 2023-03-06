@@ -13,6 +13,6 @@ public class StartButton : MonoBehaviour
         
     }
     void OnMouseDown() {
-        SceneManager.LoadScene ("Tundra");
+        SceneManager.LoadScene ("Gaming");
     }
 }

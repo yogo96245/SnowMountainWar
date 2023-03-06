@@ -11,18 +11,15 @@ public class CollisionControll : MonoBehaviour
     private int hp;
      
     RaycastHit hitObject;
-    // Start is called before the first frame update
+    
     void Start() {
         hp = 10;
     }
 
-    // Update is called once per frame
     void Update() { 
         Vector3 newPos = transform.position;
         newPos.y = newPos.y + rayPos;
-        // ���쪫��A�վ�g�u����
         Vector3 newTarget = transform.forward * 5.0f;
-        // (�_�l��m, ��V, �g�u�I������, �g�u�Z��)
         if (Physics.Raycast (newPos, transform.forward, out hitObject, 5.0f)) { 
             newTarget = hitObject.point - newPos;
             newTarget.y = 0.0f;
@@ -30,12 +27,7 @@ public class CollisionControll : MonoBehaviour
         }
         Debug.DrawRay (newPos, newTarget, Color.red);
     }
-    /*
-    private void OnCollisionEnter (Collision other) { 
-        if (other.transform.name != "Plane")
-            Debug.Log (this.name + " was collided by " + other.collider.name);
-    }
-    */
+    
     private void OnTriggerEnter (Collider other) {
         Debug.Log (other.tag);
         if (other.tag != this.tag) {
@@ -45,6 +37,7 @@ public class CollisionControll : MonoBehaviour
             Debug.Log (this.tag + " was collided by " + other.tag);
             if (hp == 0) {
                 EndText.end_text = "Winer  " + other.tag + " !!!";
+                Cursor.lockState = CursorLockMode.None;
                 SceneManager.LoadScene ("end");
             }
             Destroy (other.gameObject);

@@ -3,37 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JellyScript : MonoBehaviour
-{   
+public class JellyScript : MonoBehaviour {   
+
     public float runSpeed;
-    public float turnSmooth;
     public GameObject snowBall_prefab;
+    // Ê∫ñÂøÉÁ¥ãÁêÜ
+    public Texture2D crosshairTexture; 
     public float throw_velocity;
-    // public GameObject snowBall_spawn;
-    private float  speed;
-    private float turn; 
-    private float lastShotTime;
-    private float fireDelay;
-    //public float jumpForce;
+    public  Camera fpsCamera;
+    private float lastShotTime = 0.0f;
+    private float fireDelay = 0.1f;
+    
     Animator jelly;
     Rigidbody rigid;
-    Vector3 targetDir;
-    Vector3 jumpSpeed;
-    Quaternion targetRotate;
-    Quaternion smoothRotate;
-    // Start is called before the first frame update
+    Vector3 m_Movement;
+
     void Start() {
         jelly = GetComponent<Animator>();
         rigid  = GetComponent<Rigidbody>();
-        speed = 0.0f;
-        lastShotTime = 0.0f;
-        fireDelay = 0.5f;
     }
 
-    // Update is called once per frame
     void Update() {
-        speed = Input.GetAxis ("Vertical_" + jelly.tag);
-        turn  = Input.GetAxis ("Horizontal_" + jelly.tag);
+        float horizontal  = Input.GetAxis ("Horizontal_" + jelly.tag);
+        float vertical = Input.GetAxis ("Vertical_" + jelly.tag);
+
+        m_Movement.Set(horizontal, 0f, vertical);
+        m_Movement.Normalize();
+        m_Movement = transform.TransformDirection (m_Movement);
+        bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
+        bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
+        bool isWalking = hasHorizontalInput || hasVerticalInput;
+        transform.position += m_Movement * runSpeed * (isWalking ? 1f : 0f) * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.W)) {
             jelly.SetBool("Run", true);
@@ -58,59 +58,35 @@ public class JellyScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.S)) {
             jelly.SetBool("RunBack", true);
-            jelly.SetFloat ("speed", speed);
-            // ´·∞h
-            transform.Translate ((-1)*transform.forward * runSpeed * Time.deltaTime, Space.World);
         }
         else {
             jelly.SetBool("RunBack", false);
         }
 
-        if (Input.GetKey(KeyCode.Space) && Time.time > lastShotTime+fireDelay) {
-            // jelly.SetBool ("Attack", true);
+        if (Input.GetMouseButtonDown(0) && Time.time > lastShotTime+fireDelay) {
             jelly.SetTrigger("Attack_Trigger");
             lastShotTime = Time.time;
-            Invoke("Fire", 0.5f);
+            Invoke("Fire", fireDelay);
         }
         else {
             jelly.SetBool ("Attack", false);
         }
-        if (Input.GetKey (KeyCode.Escape)) {
-            Application.Quit();
-        }
+
     }
-    // nuye_rigid.AddForce ();
-    private void FixedUpdate() {
-        if (turn != 0) {
-            RotateControl (Math.Abs(speed), turn);
-        }
-        if (speed > 0.5) {  
-            jelly.SetFloat ("speed", speed);
-            // ´e∂i
-            transform.Translate (transform.forward * runSpeed * Time.deltaTime, Space.World);
-            // rigid.velocity = transform.forward * runSpeed;
-        }
-        else {
-            jelly.SetFloat("speed", 0.0f);
-            // rigid.velocity = new Vector3 (0.0f, rigid.velocity.y, 0.0f);  
-        }
-    }
+   
     private void Fire() {
-        Vector3 pos = transform.position; pos.y += 1.3f;
-        Quaternion rot = transform.rotation;
-        GameObject snowBall = (GameObject)Instantiate (snowBall_prefab, pos, rot);
+        Vector3 pos = fpsCamera.transform.position + fpsCamera.transform.TransformDirection (new Vector3 (0f, 0f, 1f)); 
+        Quaternion rot = fpsCamera.transform.rotation;
+        GameObject snowBall = Instantiate (snowBall_prefab, pos, rot);
         snowBall.tag = "player1";
         snowBall.GetComponent<Rigidbody>().velocity = snowBall.transform.forward * throw_velocity;
         Destroy (snowBall.gameObject, 10);
     }
-
-    private void RotateControl (float v, float h) {
-        //targetDir = new Vector3 (h, 0.0f, v);
-        targetDir = transform.TransformDirection (new Vector3 (h, 0.0f, v));
-        targetRotate = Quaternion.LookRotation (targetDir, Vector3.up);
-        // ´Ê≥t¬‡¶V transform.rotation = targetRotate;
-        // ∫•∂i¬‡¶V
-        smoothRotate = Quaternion.Slerp (transform.rotation, targetRotate, turnSmooth * Time.deltaTime);
-        transform.rotation  = smoothRotate;
-    }   
+    void OnGUI() {
+        // Áπ™Ë£ΩÊ∫ñÂøÉÁ¥ãÁêÜ
+        GUI.DrawTexture(new Rect(Screen.width / 2 - crosshairTexture.width / 2,
+                                 Screen.height / 2 - crosshairTexture.height / 2,
+                                 crosshairTexture.width, crosshairTexture.height),
+                        crosshairTexture);
+    }
 }
