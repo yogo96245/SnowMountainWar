@@ -24,11 +24,11 @@ public class JellyScript : MonoBehaviour {
     }
 
     void Update() {
-        float horizontal  = Input.GetAxis ("Horizontal_" + jelly.tag);
-        float vertical = Input.GetAxis ("Vertical_" + jelly.tag);
+        float horizontal  = Input.GetAxis ("Horizontal");
+        float vertical = Input.GetAxis ("Vertical");
 
         m_Movement.Set(horizontal, 0f, vertical);
-        m_Movement.Normalize();
+        //m_Movement.Normalize();
         m_Movement = transform.TransformDirection (m_Movement);
         bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
         bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
