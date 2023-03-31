@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class JellyScript : MonoBehaviour {   
 
-    public float runSpeed;
+    public float runSpeed = 5f;
     public GameObject snowBall_prefab;
     // 準心紋理
     public Texture2D crosshairTexture; 
-    public float throw_velocity;
+    public float throw_velocity = 10f;
     public  Camera fpsCamera;
     private float lastShotTime = 0.0f;
     private float fireDelay = 0.1f;
@@ -33,6 +33,7 @@ public class JellyScript : MonoBehaviour {
         bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
         bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
         bool isWalking = hasHorizontalInput || hasVerticalInput;
+        print (m_Movement);
         transform.position += m_Movement * runSpeed * (isWalking ? 1f : 0f) * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.W)) {

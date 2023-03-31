@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5014381289915968276}
   - component: {fileID: 5014381289915968277}
   - component: {fileID: 5014381289915968298}
-  - component: {fileID: 5014381289915968299}
+  - component: {fileID: -9112593614509868509}
   - component: {fileID: 5068726254207882548}
+  - component: {fileID: 5179375416108962256}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -57,8 +58,9 @@ MonoBehaviour:
     RawGuidValue: 9f8f55e0fd2e54949b12642f8225827d
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 5014381289915968299}
+  - {fileID: -9112593614509868509}
   - {fileID: 5068726254207882548}
+  - {fileID: 5179375416108962256}
   SimulationBehaviours: []
 --- !u!143 &5014381289915968298
 CharacterController:
@@ -78,7 +80,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.32, z: 0}
---- !u!114 &5014381289915968299
+--- !u!114 &-9112593614509868509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +89,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5014381289915968296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
+  m_Script: {fileID: 11500000, guid: bb9d0fee8231d014b8b8cb2e85d17137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
@@ -108,10 +110,10 @@ MonoBehaviour:
   TargetInterpolationDelay: 0.03
   gravity: -20
   jumpImpulse: 8
-  acceleration: 10
-  braking: 10
-  maxSpeed: 5
-  rotationSpeed: 5
+  acceleration: 50
+  braking: 30
+  maxSpeed: 6
+  rotationSpeed: 3
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &5068726254207882548
@@ -124,6 +126,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a04acf87fa20ea4ea115b34433e9c21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+--- !u!114 &5179375416108962256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5014381289915968296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c531bf8c511c604895c0fecf28b6ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
@@ -324,7 +339,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8228091844358740908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3994294aef326a14eb830bd29c6025f9, type: 3}
   m_Name: 

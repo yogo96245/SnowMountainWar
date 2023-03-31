@@ -60,18 +60,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
         // 傳送 input 資料給 server
         input.Set(data);
-
-        // if (Input.GetKey(KeyCode.W))
-        //   data.movementInput += Vector3.forward;
-
-        // if (Input.GetKey(KeyCode.S))
-        //   data.movementInput += Vector3.back;
-
-        // if (Input.GetKey(KeyCode.A))
-        //   data.movementInput += Vector3.left;
-
-        // if (Input.GetKey(KeyCode.D))
-        //   data.movementInput += Vector3.right;
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }

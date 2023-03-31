@@ -5,20 +5,26 @@ using Fusion;
 
 public class PlayerController : NetworkBehaviour {
 
-    private NetworkCharacterControllerPrototype networkCharacterController;
+    private NetworkCharacterControllerPrototypeCustom networkCharacterController;
     private Animator animator;
     private Camera myCamera;
-    private float moveSpeed = 5f;
     private float cameraRotationX = 0f;
+    private Vector3 offset = new Vector3 (0f, 2f, 1f);
     
     void Awake() {
-        networkCharacterController = GetComponent<NetworkCharacterControllerPrototype>();
+        networkCharacterController = GetComponent<NetworkCharacterControllerPrototypeCustom>();
         myCamera = GetComponentInChildren<Camera>();
         animator = GetComponentInChildren<Animator>();
     }
 
+    void Start() {
+        // 隱藏鼠標並鎖定到屏幕中心
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     void Update() {
-        
+        // camera follow player
+        myCamera.transform.position = transform.position + (transform.TransformDirection (offset));
     }
 
     public override void FixedUpdateNetwork() {
@@ -26,11 +32,7 @@ public class PlayerController : NetworkBehaviour {
 
             Vector3 moveVector = transform.right * data.movementInput.x + transform.forward * data.movementInput.z;
             moveVector.Normalize();
-            networkCharacterController.Move (moveVector * moveSpeed * Runner.DeltaTime);
-            
-            // if (moveVector.z > 0f) {
-            //     animator.SetBool("Run", true);
-            // }     
+            networkCharacterController.Move (moveVector);   
 
             // Camera 垂直旋轉
             cameraRotationX += data.rotateInput.x * networkCharacterController.rotationSpeed;

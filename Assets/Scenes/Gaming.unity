@@ -8775,7 +8775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &397699719
 Transform:
   m_ObjectHideFlags: 0
@@ -25709,7 +25709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1109714429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49344,6 +49344,23 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7842672277087194821, guid: 52af36774d56a5445b897ecf8d09872e, type: 3}
   m_PrefabInstance: {fileID: 2046554694}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1990853530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990853528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39410064d6970894f856e456e1b8edb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 5
+  snowBall_prefab: {fileID: 7078785450431632461, guid: 90cac3fe01c5c8947b7aa65cfd5377c3, type: 3}
+  crosshairTexture: {fileID: 2800000, guid: 3dd9fb16cf99b46429ba2a8e5c0dc766, type: 3}
+  throw_velocity: 10
+  fpsCamera: {fileID: 1428746449}
 --- !u!4 &1990853534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7842672277086900965, guid: 52af36774d56a5445b897ecf8d09872e, type: 3}
