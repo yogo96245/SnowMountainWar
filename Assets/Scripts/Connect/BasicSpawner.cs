@@ -15,6 +15,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     private Dictionary<PlayerRef, NetworkObject> playerList = new Dictionary<PlayerRef, NetworkObject>();
 
+    private int playerNumber = 0;
+
     void Start() {
         StartGame (GameMode.AutoHostOrClient);
     }
@@ -36,7 +38,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
         print ("player joned");
-         Vector3 spawnPosition = new Vector3 (-756f, 10.2f, -529);
+        playerNumber++;
+        Vector3 spawnPosition = new Vector3 (-756f, 10.2f, -529);
         NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
         // Keep track of the player avatars so we can remove it when they disconnect
         playerList.Add(player, networkPlayerObject);
@@ -57,6 +60,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y") * -1;
         data.rotateInput.Set (mouseY, mouseX);
+
+        data.buttons.Set (InputButtons.FIRE, Input.GetKey (KeyCode.Mouse0));
 
         // 傳送 input 資料給 server
         input.Set(data);

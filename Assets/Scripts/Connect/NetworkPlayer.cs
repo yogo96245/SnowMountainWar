@@ -13,8 +13,8 @@ public class NetworkPlayer : NetworkBehaviour {
 
             print ("Spawned local player");
         }
+        // 關閉remote player的Camera
         else {
-            // 關閉remote player的Camera
             Camera localCamera = GetComponentInChildren<Camera>();
             localCamera.enabled = false;
 
