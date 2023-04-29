@@ -7,7 +7,7 @@ public enum InputButtons {
     FIRE
 }
 public struct NetworkInputData : INetworkInput {
-    public Vector3 movementInput;
-    public Vector2 rotateInput;
+    public Vector2 movementInput;
+    public Vector3 aimForwardVector;
     public NetworkButtons buttons;
 }

@@ -13,9 +13,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     [SerializeField]
     private NetworkPrefabRef playerPrefab;
 
+    private PlayerInput playerInput;
+
     private Dictionary<PlayerRef, NetworkObject> playerList = new Dictionary<PlayerRef, NetworkObject>();
 
     private int playerNumber = 0;
+
+    void Awake() {
+        
+    }
 
     void Start() {
         StartGame (GameMode.AutoHostOrClient);
@@ -51,20 +57,13 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         }
     }
     public void OnInput(NetworkRunner runner, NetworkInput input) {
-        var data = new NetworkInputData();
+        if (playerInput == null && NetworkPlayer.Local != null) {
+            playerInput = NetworkPlayer.Local.GetComponent<PlayerInput>();
+        }
 
-        float horizontal  = Input.GetAxis ("Horizontal");
-        float vertical = Input.GetAxis ("Vertical");
-        data.movementInput.Set(horizontal, 0f, vertical);
-
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y") * -1;
-        data.rotateInput.Set (mouseY, mouseX);
-
-        data.buttons.Set (InputButtons.FIRE, Input.GetKey (KeyCode.Mouse0));
-
-        // 傳送 input 資料給 server
-        input.Set(data);
+        if (playerInput != null) {
+            input.Set(playerInput.GetNetworkInput());
+        }
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }

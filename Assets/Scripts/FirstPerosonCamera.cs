@@ -4,46 +4,59 @@ using UnityEngine;
 
 public class FirstPerosonCamera : MonoBehaviour {
     
-    public GameObject player;
+    public Transform cameraPoint;
+    private Vector2 viewInput;
+    private Camera localCamera;
+    private NetworkCharacterControllerPrototypeCustom networkCharacterController;
+
     public float mouseSensitivity = 100f;
-    private Vector3 offset;
-    private Transform playerTransform;
     // camera垂直旋轉
-    private float xRotation = 0f;
+    private float canmeraRotationX = 0f;
     // camera水平旋轉
-    private float yRotation = 0f;
+    private float canmeraRotationY = 0f;
+
+    void Awake() {
+        localCamera = GetComponent<Camera>();
+        networkCharacterController = GetComponentInParent<NetworkCharacterControllerPrototypeCustom>();
+    }
 
     void Start() {
-        playerTransform = player.transform;
-        offset = new Vector3 (0f, 2f, 1f);
-        transform.position = playerTransform.position + (playerTransform.TransformDirection (offset));
-
+        if (localCamera.enabled) {
+            // 分割Camera
+            localCamera.transform.parent = null;
+        }
         // 隱藏鼠標並鎖定到屏幕中心
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
-    void Update() {
-        // camera follow player
-        transform.position = playerTransform.position + (playerTransform.TransformDirection (offset));
+    void LateUpdate() {
 
-        // 獲取鼠標輸入
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        if (!localCamera.enabled) {
+            return;
+        }
+
+        if (cameraPoint == null) {
+            return;
+        }
+
+        // Camera follow player
+        localCamera.transform.position = cameraPoint.position;
 
          // 計算camera旋轉角度
-        xRotation -= mouseY;
-        yRotation += mouseX;
+        canmeraRotationX += viewInput.y * Time.deltaTime * networkCharacterController.rotationSpeed;
+        canmeraRotationY += viewInput.x * Time.deltaTime * networkCharacterController.rotationSpeed;
 
         // 限制上下旋轉角度
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);    
+        canmeraRotationX = Mathf.Clamp(canmeraRotationX, -90f, 90f);
 
         // 上下左右旋轉
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        localCamera.transform.rotation = Quaternion.Euler(canmeraRotationX, canmeraRotationY, 0);
         
-        // 角色隨camera左右旋轉
-        playerTransform.localRotation = Quaternion.Euler(0f, yRotation, 0f);
     }
-
+    
+    public void SetMouseInputVector (Vector2 viewInput) {
+        this.viewInput = viewInput;
+    }
 
 }
