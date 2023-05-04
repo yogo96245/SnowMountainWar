@@ -8,6 +8,9 @@ public class SnowBall : NetworkBehaviour {
     [SerializeField]
     private float shootSpeed =  5.0f;
 
+    [SerializeField]
+    private byte demage =  10;
+
     [Networked]
     private TickTimer life {set; get;}
 
@@ -21,6 +24,19 @@ public class SnowBall : NetworkBehaviour {
         }
         else {
             transform.position += shootSpeed * transform.forward * Runner.DeltaTime;    
+        }
+    }
+
+    private void OnTriggerEnter (Collider other) {
+
+        var networkObject = other.GetComponent<NetworkObject>();
+
+        if (other.CompareTag ("Player") && (Object.InputAuthority != networkObject.InputAuthority)) {
+
+            var playerState = other.GetComponent<PlayerState>();
+            playerState.TakeDemage (demage);
+
+            Runner.Despawn (Object);
         }
     }
 }

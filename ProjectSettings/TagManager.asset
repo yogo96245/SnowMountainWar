@@ -6,8 +6,6 @@ TagManager:
   tags:
   - gaming_UI
   - snow ball
-  - player2
-  - player1
   layers:
   - Default
   - TransparentFX
