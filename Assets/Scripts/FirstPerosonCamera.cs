@@ -29,6 +29,15 @@ public class FirstPerosonCamera : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    void Update() {
+        if (Input.GetKey(KeyCode.Escape)) {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        if (Input.GetKey (KeyCode.Mouse0)) {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
     // Update is called once per frame
     void LateUpdate() {
 

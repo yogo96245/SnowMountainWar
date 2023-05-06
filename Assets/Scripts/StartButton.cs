@@ -4,8 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartButton : MonoBehaviour
-{
+public class StartButton : MonoBehaviour {
+
+    [SerializeField]
+    private GameObject panel;
+
     void Start() {
         
     }
@@ -13,6 +16,6 @@ public class StartButton : MonoBehaviour
         
     }
     void OnMouseDown() {
-        SceneManager.LoadScene ("Gaming");
+        panel.SetActive (true);
     }
 }

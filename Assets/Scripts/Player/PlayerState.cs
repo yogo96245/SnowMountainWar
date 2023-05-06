@@ -39,7 +39,16 @@ public class PlayerState : NetworkBehaviour {
     }
 
     static void OnHPChanged (Changed<PlayerState> changed) {
+
         Debug.LogFormat ("{0} has {1}hp", changed.Behaviour.transform.name, changed.Behaviour.Hp);
-        changed.Behaviour.hpBar.fillAmount = (float)changed.Behaviour.Hp / changed.Behaviour.maxHp;
+
+        changed.Behaviour.OnHPChanged ();
+
+    }
+
+    private void OnHPChanged() {
+
+        hpBar.fillAmount = (float)Hp / maxHp;
+
     }
 }
