@@ -12,6 +12,8 @@ public class PlayerState : NetworkBehaviour {
     [Networked]
     public bool isDead {get; set;}
 
+    public bool skipSettingStartValues = false;
+
     private byte maxHp = 100;
 
     [SerializeField]
@@ -19,9 +21,12 @@ public class PlayerState : NetworkBehaviour {
 
     void Start() {
 
-        Hp = maxHp;
-        isDead = false;
+        if (!skipSettingStartValues) {
+            Hp = maxHp;
+            isDead = false;
+        }
     }
+    
     public void TakeDemage (byte demage) {
 
         if (isDead) {

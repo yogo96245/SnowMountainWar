@@ -24,6 +24,8 @@ public class InputNickName : MonoBehaviour {
         PlayerPrefs.SetString("PlayerNickName", inputField.text);
         PlayerPrefs.Save();
 
+        GameManager.instance.playerNickName = inputField.text;
+
         SceneManager.LoadScene("Gaming");
 
     }

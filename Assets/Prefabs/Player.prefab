@@ -219,11 +219,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   playerModel: {fileID: 8313861969605545180}
-  playerNickNameTMP: {fileID: 3795144790992302017}
-  nickName:
+  _nickName:
     _length: 0
     _data:
       Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  playerNickNameTMP: {fileID: 3795144790992302017}
+  firstPerosonCamera: {fileID: 1053703486808454258}
+  localUI: {fileID: 2561978650214666505}
+  _token: 0
 --- !u!114 &-9112593614509868509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,7 +307,6 @@ MonoBehaviour:
   _Hp: 0
   _isDead: 0
   hpBar: {fileID: 4303331673857710532}
-  myName: 
 --- !u!1 &5503790990395230932
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,6 +570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraPoint: {fileID: 8021129839312736880}
+  localCamera: {fileID: 0}
   mouseSensitivity: 100
 --- !u!1 &8368947637258575871
 GameObject:
@@ -1327,11 +1330,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b05d8b2cbf95ee4092bddc4232d6a7e, type: 3}
---- !u!224 &7441459249292299336 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3003868310724142664, guid: 5b05d8b2cbf95ee4092bddc4232d6a7e, type: 3}
-  m_PrefabInstance: {fileID: 5686565916425267712}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4303331673857710532 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8453886288719180740, guid: 5b05d8b2cbf95ee4092bddc4232d6a7e, type: 3}
@@ -1343,3 +1341,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2561978650214666505 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7883348359362198281, guid: 5b05d8b2cbf95ee4092bddc4232d6a7e, type: 3}
+  m_PrefabInstance: {fileID: 5686565916425267712}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &7441459249292299336 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3003868310724142664, guid: 5b05d8b2cbf95ee4092bddc4232d6a7e, type: 3}
+  m_PrefabInstance: {fileID: 5686565916425267712}
+  m_PrefabAsset: {fileID: 0}

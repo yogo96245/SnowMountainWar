@@ -11,47 +11,68 @@ public class NetworkPlayer : NetworkBehaviour {
 
     public Transform playerModel;
 
+    [Networked (OnChanged = nameof(OnNickNameChanged))]
+    public NetworkString<_16> nickName {set; get;}
+
     [SerializeField]
     private TextMeshProUGUI playerNickNameTMP;
 
-    
-    [Networked (OnChanged = nameof(OnNickNameChanged))]
-    public NetworkString<_16> nickName {set; get;}
+    [SerializeField]
+    private FirstPerosonCamera firstPerosonCamera;
+
+    [SerializeField]
+    private GameObject localUI;
+
+    // Remote Client Token Hash
+    [Networked]
+    public int token {get; set;}
 
     public override void Spawned() {
         
         // 生成local player時
         if (Object.HasInputAuthority) {
 
-            print ("Spawned local player");
-
             Local = this;
 
             //Sets the layer of the local players model
             Utils.SetRenderLayerInChildren(playerModel, LayerMask.NameToLayer("LocalPlayerModel"));
 
-            RPC_SetNickName(PlayerPrefs.GetString("PlayerNickName"));
+            //Enable 1 audio listner
+            // AudioListener audioListener = GetComponentInChildren<AudioListener>(true);
+            // audioListener.enabled = true;
 
+            // Enable the local camera
+            firstPerosonCamera.localCamera.enabled = true;
+
+            // Detach the local camera
+            firstPerosonCamera.localCamera.transform.parent = null;
+
+            // Enable the local UI
+            localUI.SetActive (true);
+
+            RPC_SetNickName(GameManager.instance.playerNickName);
+
+            print ("Spawned local player");
         }
 
         // 生成remote player時
         else {
 
+            //Disable the local camera for remote players
+            firstPerosonCamera.localCamera.enabled = false;
+
+            //Disable UI for remote player
+            localUI.SetActive(false);
+
+            //Only 1 audio listner is allowed in the scene so disable remote players audio listner
+            // AudioListener audioListener = GetComponentInChildren<AudioListener>();
+            // audioListener.enabled = false;
+
             print ("Spawned remote player");
-
-            Camera remoteCamera = GetComponentInChildren<Camera>();
-            remoteCamera.enabled = false;
-
-            Canvas remoteCanvas  = GetComponentInChildren<Canvas>();
-            remoteCanvas.gameObject.SetActive (false);
-
         }
 
         // Make it easier to tell which player is which.
         transform.name = $"P_{Object.Id}";
-
-        
-        
     }
 
     static void OnNickNameChanged(Changed<NetworkPlayer> changed) {
@@ -80,5 +101,11 @@ public class NetworkPlayer : NetworkBehaviour {
 
         //     isPublicJoinMessageSent = true;
         // }
+    }
+    
+    void OnDestroy() {
+        if (firstPerosonCamera != null) {
+            Destroy (firstPerosonCamera.gameObject);
+        }
     }
 }

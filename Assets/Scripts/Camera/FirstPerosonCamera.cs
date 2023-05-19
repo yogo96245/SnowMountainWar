@@ -6,14 +6,14 @@ public class FirstPerosonCamera : MonoBehaviour {
     
     public Transform cameraPoint;
     private Vector2 viewInput;
-    private Camera localCamera;
+    public Camera localCamera;
     private NetworkCharacterControllerPrototypeCustom networkCharacterController;
 
     public float mouseSensitivity = 100f;
     // camera垂直旋轉
-    private float canmeraRotationX = 0f;
+    private float cameraRotationX = 0f;
     // camera水平旋轉
-    private float canmeraRotationY = 0f;
+    private float cameraRotationY = 0f;
 
     void Awake() {
         localCamera = GetComponent<Camera>();
@@ -21,10 +21,10 @@ public class FirstPerosonCamera : MonoBehaviour {
     }
 
     void Start() {
-        if (localCamera.enabled) {
-            // 分割Camera
-            localCamera.transform.parent = null;
-        }
+
+        cameraRotationX = GameManager.instance.cameraViewRotation.x;
+        cameraRotationY = GameManager.instance.cameraViewRotation.y;
+        
         // 隱藏鼠標並鎖定到屏幕中心
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -53,14 +53,14 @@ public class FirstPerosonCamera : MonoBehaviour {
         localCamera.transform.position = cameraPoint.position;
 
          // 計算camera旋轉角度
-        canmeraRotationX += viewInput.y * Time.deltaTime * networkCharacterController.rotationSpeed;
-        canmeraRotationY += viewInput.x * Time.deltaTime * networkCharacterController.rotationSpeed;
+        cameraRotationX += viewInput.y * Time.deltaTime * networkCharacterController.rotationSpeed;
+        cameraRotationY += viewInput.x * Time.deltaTime * networkCharacterController.rotationSpeed;
 
         // 限制上下旋轉角度
-        canmeraRotationX = Mathf.Clamp(canmeraRotationX, -90f, 90f);
+        cameraRotationX = Mathf.Clamp(cameraRotationX, -90f, 90f);
 
         // 上下左右旋轉
-        localCamera.transform.rotation = Quaternion.Euler(canmeraRotationX, canmeraRotationY, 0);
+        localCamera.transform.rotation = Quaternion.Euler(cameraRotationX, cameraRotationY, 0);
         
     }
     
@@ -68,4 +68,11 @@ public class FirstPerosonCamera : MonoBehaviour {
         this.viewInput = viewInput;
     }
 
+    private void OnDestroy() {
+
+        if (cameraRotationX != 0 && cameraRotationY != 0) {
+            GameManager.instance.cameraViewRotation.x = cameraRotationX;
+            GameManager.instance.cameraViewRotation.y = cameraRotationY;
+        }
+    }
 }
