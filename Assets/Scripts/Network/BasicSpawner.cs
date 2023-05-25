@@ -15,10 +15,11 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     private Dictionary<int, NetworkPlayer> mapTokenIDWithNetworkPlayer;
 
-    private int playerNumber = 0;
+    private LobbyUIHandler lobbyUIHandler;
 
     void Awake() {
         mapTokenIDWithNetworkPlayer = new Dictionary<int, NetworkPlayer>();
+        lobbyUIHandler = FindObjectOfType<LobbyUIHandler>();
     }
 
     void Start() {
@@ -72,8 +73,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
                 
                 Debug.Log($"Spawning new player for connection token {playerToken}");
 
-                playerNumber++;
-
                 Vector3 spawnPosition = new Vector3 (-756f, 10.2f, -529);
                 NetworkPlayer spawnedNetworkPlayer = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
 
@@ -87,9 +86,34 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
-        // if (playerList.TryGetValue(player, out NetworkPlayer networkObject)) {
-        //     runner.Despawn(networkObject);
-        //     playerList.Remove(player);
+
+        // if (runner.IsServer) {
+
+        //     Debug.Log ("player left");
+
+        //     Debug.Log (player);
+
+        //     // Error: miss player token
+        //     var token = runner.GetPlayerConnectionToken(player);
+
+        //     Debug.Log ($"token: {token}");
+
+        //     int hashToken = ConnectionTokenUtils.HashToken (token);
+
+        //     Debug.Log ($"hashToken: {hashToken}");
+
+        //     if (mapTokenIDWithNetworkPlayer.TryGetValue(hashToken, out NetworkPlayer networkObject)) {
+
+        //         Debug.Log ($"player left token:{hashToken}");
+
+        //         // mapTokenIDWithNetworkPlayer.Remove (hashToken);
+
+        //         Debug.Log ($"currnt mapTokenIDWithNetworkPlayer: {mapTokenIDWithNetworkPlayer.Count}");
+        //     }
+
+        //     else {
+        //         Debug.Log ("Not found player token when player left");
+        //     }
         // }
     }
 
@@ -106,15 +130,16 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
-
-        print ("OnShutdown");
+        Debug.Log ("OnShutdown");
      }
 
     public void OnConnectedToServer(NetworkRunner runner) {
-        print ("player connected server");
+        Debug.Log ("player connected server");
     }
 
-    public void OnDisconnectedFromServer(NetworkRunner runner) { }
+    public void OnDisconnectedFromServer(NetworkRunner runner) { 
+        Debug.Log ("OnDisconnectedFromServer");
+    }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
     
@@ -122,7 +147,34 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
     
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { 
+
+        //Only update the list of sessions when the session list UI handler is active
+        if (lobbyUIHandler == null) {
+            Debug.Log ("not found lobbyUIHandler");
+            return;
+        }
+            
+        if (sessionList.Count == 0) {
+
+            Debug.Log("Joined lobby no sessions found");
+
+            lobbyUIHandler.OnNoSessionsFound();
+        }
+        else {
+
+            Debug.Log ($"sessionList.Count: {sessionList.Count}");
+
+            lobbyUIHandler.ClearRoomList();
+
+            foreach (SessionInfo sessionInfo in sessionList) {
+
+                lobbyUIHandler.AddToRoomList(sessionInfo);
+
+                Debug.Log($"Found session {sessionInfo.Name} playerCount {sessionInfo.PlayerCount}");
+            }
+        }
+    }
     
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     
@@ -134,7 +186,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     public async void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) {
 
-        print ("OnHostMigration");
+        Debug.Log ("OnHostMigration");
 
         await runner.Shutdown (shutdownReason: ShutdownReason.HostMigration);
         
@@ -151,15 +203,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
             if (networkObjectInDictionary.InputAuthority.IsNone) {
 
+                Debug.Log($"Found player that has not reconnected. Despawning {entry.Value.nickName}");
+
+                networkObjectInDictionary.Runner.Despawn(networkObjectInDictionary);
+
                 // Debug.Log($"mapTokenIDWithNetworkPlaye remove token {entry.Key} player");
 
                 // mapTokenIDWithNetworkPlayer.Remove (entry.Key);
 
-                Debug.Log ($"currnt mapTokenIDWithNetworkPlaye: {mapTokenIDWithNetworkPlayer.Count}");
-
-                Debug.Log($"Found player that has not reconnected. Despawning {entry.Value.nickName}");
-
-                networkObjectInDictionary.Runner.Despawn(networkObjectInDictionary);
+                // Debug.Log ($"currnt mapTokenIDWithNetworkPlayer: {mapTokenIDWithNetworkPlayer.Count}");
             }
         }
 

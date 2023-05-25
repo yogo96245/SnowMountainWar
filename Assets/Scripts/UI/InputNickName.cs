@@ -13,7 +13,7 @@ public class InputNickName : MonoBehaviour {
 
         if (PlayerPrefs.HasKey ("PlayerNickName")) {
 
-            print ("已填入玩家名稱");
+            Debug.Log ("已填入玩家名稱");
             inputField.text = PlayerPrefs.GetString("PlayerNickName");
         }
         
@@ -26,7 +26,6 @@ public class InputNickName : MonoBehaviour {
 
         GameManager.instance.playerNickName = inputField.text;
 
-        SceneManager.LoadScene("Gaming");
-
+        SceneManager.LoadScene("Lobby");
     }
 }

@@ -15,7 +15,7 @@ public class NetworkPlayer : NetworkBehaviour {
     public NetworkString<_16> nickName {set; get;}
 
     [SerializeField]
-    private TextMeshProUGUI playerNickNameTMP;
+    private TextMeshProUGUI playerNickName_Text;
 
     [SerializeField]
     private FirstPerosonCamera firstPerosonCamera;
@@ -52,7 +52,7 @@ public class NetworkPlayer : NetworkBehaviour {
 
             RPC_SetNickName(GameManager.instance.playerNickName);
 
-            print ("Spawned local player");
+            Debug.Log ("Spawned local player");
         }
 
         // 生成remote player時
@@ -68,7 +68,7 @@ public class NetworkPlayer : NetworkBehaviour {
             // AudioListener audioListener = GetComponentInChildren<AudioListener>();
             // audioListener.enabled = false;
 
-            print ("Spawned remote player");
+            Debug.Log ("Spawned remote player");
         }
 
         // Make it easier to tell which player is which.
@@ -85,7 +85,7 @@ public class NetworkPlayer : NetworkBehaviour {
 
         Debug.Log($"Nickname changed to {nickName} for player {gameObject.name}");
 
-        playerNickNameTMP.text = nickName.ToString();
+        playerNickName_Text.text = nickName.ToString();
 
     }
 

@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     public Vector2 cameraViewRotation = Vector2.zero;
     public string playerNickName = "";
 
+    // 禁止外部生成物件
+    private GameManager() {}
+
     private void Awake()
     {
         if (instance == null)
