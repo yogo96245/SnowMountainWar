@@ -6,16 +6,24 @@ using Fusion;
 public class PlayerController : NetworkBehaviour {
 
     private NetworkCharacterControllerPrototypeCustom networkCharacterController;
-    private Animator animator;
+
     private Camera myCamera;
-    private Vector3 offset = new Vector3 (0f, 2f, 1f);
+
+    private float horizontalMovement = 0.0f;
+
+    private float verticalMovement = 0.0f;
 
     [SerializeField]
     private SnowBall snowBallPrefab;
+
     [SerializeField]
     private Transform bulltSpawnTransform;
+
     [SerializeField]
     private Transform cameraPoint;
+
+    [SerializeField]
+    private Animator animator;
 
     [Networked]
     private NetworkButtons previousButtons {set; get;}
@@ -23,7 +31,7 @@ public class PlayerController : NetworkBehaviour {
     void Awake() {
         networkCharacterController = GetComponent<NetworkCharacterControllerPrototypeCustom>();
         myCamera = GetComponentInChildren<Camera>();
-        animator = GetComponentInChildren<Animator>();
+        // animator = GetComponentInChildren<Animator>();
     }
 
     void Start() {
@@ -41,7 +49,6 @@ public class PlayerController : NetworkBehaviour {
             
             // 依aimForwardVector旋轉角色
             transform.forward = data.aimForwardVector;
-
             
             Quaternion oldRotation = transform.rotation;
             
@@ -49,6 +56,13 @@ public class PlayerController : NetworkBehaviour {
             Quaternion rotation = transform.rotation;
             rotation.eulerAngles = new Vector3(0, rotation.eulerAngles.y, rotation.eulerAngles.z);
             transform.rotation = rotation;
+            
+            // Character animation
+            // Let the animation look smooth
+            horizontalMovement = Mathf.Lerp (horizontalMovement, data.movementInput.x, Runner.DeltaTime * 10);
+            verticalMovement = Mathf.Lerp (verticalMovement, data.movementInput.y, Runner.DeltaTime * 10);
+            animator.SetFloat ("horizontalMovement", horizontalMovement);
+            animator.SetFloat ("verticalMovement", verticalMovement);
 
             // Buttons 資料
             NetworkButtons buttons = data.buttons;

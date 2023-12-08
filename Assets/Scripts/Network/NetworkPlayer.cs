@@ -26,10 +26,10 @@ public class NetworkPlayer : NetworkBehaviour {
     // Remote Client Token Hash
     [Networked]
     public int token {get; set;}
-
+    
     public override void Spawned() {
         
-        // 生成local player時
+        // Spawn local player
         if (Object.HasInputAuthority) {
 
             Local = this;
@@ -55,7 +55,7 @@ public class NetworkPlayer : NetworkBehaviour {
             Debug.Log ("Spawned local player");
         }
 
-        // 生成remote player時
+        // Spawn remote player
         else {
 
             //Disable the local camera for remote players
