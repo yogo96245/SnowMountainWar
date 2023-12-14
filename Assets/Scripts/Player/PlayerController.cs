@@ -5,32 +5,33 @@ using Fusion;
 
 public class PlayerController : NetworkBehaviour {
 
-    private NetworkCharacterControllerPrototypeCustom networkCharacterController;
-
-    private Camera myCamera;
-
     private float horizontalMovement = 0.0f;
 
     private float verticalMovement = 0.0f;
 
     [SerializeField]
-    private SnowBall snowBallPrefab;
+    private  float animationTransitionTime = 0.1f;
+
+    private NetworkCharacterControllerPrototypeCustom networkCharacterController;
+
+    [Networked]
+    private NetworkButtons previousButtons {set; get;}
 
     [SerializeField]
     private Transform bulltSpawnTransform;
 
     [SerializeField]
-    private Transform cameraPoint;
-
-    [SerializeField]
     private Animator animator;
 
-    [Networked]
-    private NetworkButtons previousButtons {set; get;}
-    
+    [SerializeField]
+    private SnowBall snowBallPrefab;
+
+    [SerializeField]
+    private GameObject muzzle;
+
     void Awake() {
         networkCharacterController = GetComponent<NetworkCharacterControllerPrototypeCustom>();
-        myCamera = GetComponentInChildren<Camera>();
+        // myCamera = GetComponentInChildren<Camera>();
         // animator = GetComponentInChildren<Animator>();
     }
 
@@ -57,8 +58,7 @@ public class PlayerController : NetworkBehaviour {
             rotation.eulerAngles = new Vector3(0, rotation.eulerAngles.y, rotation.eulerAngles.z);
             transform.rotation = rotation;
             
-            // Character animation
-            // Let the animation look smooth
+            // Character movement animation with smooth transition
             horizontalMovement = Mathf.Lerp (horizontalMovement, data.movementInput.x, Runner.DeltaTime * 10);
             verticalMovement = Mathf.Lerp (verticalMovement, data.movementInput.y, Runner.DeltaTime * 10);
             animator.SetFloat ("horizontalMovement", horizontalMovement);
@@ -79,13 +79,28 @@ public class PlayerController : NetworkBehaviour {
 
                 // Vector3 shootDirector = (aimPosition - bulltSpawnTransform.position).normalized;
 
-                Runner.Spawn (snowBallPrefab,
-                              cameraPoint.position,
-                              oldRotation,
-                              Object.InputAuthority
-                );
+                // Shoot animation
+                
+                StartCoroutine(Fire(oldRotation));
+                
             }
         }
+    }
+
+    private IEnumerator Fire(Quaternion oldRotation) {
+        // Prevent firing while firing
+        if (animator.GetBool ("hasFiring")) {
+            yield break;
+        }
+        animator.Play ("Fire", 0, animationTransitionTime);
+        animator.SetBool ("hasFiring", true);
+        yield return new WaitForSeconds(0.3f);
+        animator.SetBool ("hasFiring", false);
+        Runner.Spawn (snowBallPrefab,
+                      muzzle.transform.position,
+                      oldRotation,
+                      Object.InputAuthority
+        );
     }
 }
 

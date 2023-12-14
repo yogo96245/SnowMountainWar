@@ -26,8 +26,10 @@ public class PlayerInput : MonoBehaviour {
 
         isShoot = Input.GetKey (KeyCode.Mouse0);
 
-        // 傳遞viewInput至Camera
-        firstPerosonCamera.SetMouseInputVector (viewInput);
+        // if cursor state is not None, then we want to rotate the camera
+        if (Cursor.lockState != CursorLockMode.None) {
+            firstPerosonCamera.SetMouseInputVector (viewInput);
+        }
     }
 
     public NetworkInputData GetNetworkInput() {
