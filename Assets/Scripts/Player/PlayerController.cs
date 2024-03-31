@@ -84,6 +84,7 @@ public class PlayerController : NetworkBehaviour {
                 StartCoroutine(Fire(oldRotation));
                 
             }
+
         }
     }
 
@@ -92,7 +93,7 @@ public class PlayerController : NetworkBehaviour {
         if (animator.GetBool ("hasFiring")) {
             yield break;
         }
-        animator.Play ("Fire", 0, animationTransitionTime);
+        
         animator.SetBool ("hasFiring", true);
         yield return new WaitForSeconds(0.3f);
         animator.SetBool ("hasFiring", false);
